@@ -1,0 +1,17 @@
+{
+    "name": "alexa/021-traits",
+    "type": "project",
+    "license": "MI",
+    "authors": [
+        {
+            "name": "Alexander Diaz",
+            "email": "aliensanderdiaz@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {}
+}

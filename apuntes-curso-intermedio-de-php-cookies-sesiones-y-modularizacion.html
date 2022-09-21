@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<title>Curso Intermedio de PHP: Cookies, Sesiones y Modularización</title>
+</head>
+
+<body>
+<header class="text-center">
+<h1>Curso Intermedio de PHP: Cookies, Sesiones y Modularización</h1>
+</header>
+<main class="container">
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 1 de 22 - ¿Cómo hacer debugging en PHP?</h2>
+    
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 2 de 22 - La función dd() en PHP</h2>
+    <pre class="prettyprint">
+            
+        composer require --dev symfony/var-dumper
+    </pre>
+    <pre class="prettyprint">
+            
+        &lt?php
+
+        require("../vendor/autoload.php");
+        
+        class Michi {
+            protected $patas = [];
+            protected $color;
+        
+            function __construct(string $color)
+            {
+                $this->color = $color;
+        
+                for ($i=0; $i &lt 4; $i++) { 
+                    $this->patas[$i] = new PataDeMichi();
+                }
+            }
+        }
+        
+        class PataDeMichi {
+            protected $nails = 4;
+            protected $description = "Tiene manchitas";
+        
+            public function get_description(): string
+            {
+                return $this->description;
+            }
+        }
+        
+        $casa_de_michis = array(
+            "nombre" => "MiChilango",
+            "ubicacion" => [
+                "pais" => "México",
+                "ciudad" => "Ciudad de México",
+                "colonia" => "Doctores",
+                "numero" => 27
+            ],
+            "numero_de_michis" => 3,
+            "michis" => [
+                new Michi("blanco"),
+                new Michi("negro"),
+                new Michi("gris")
+            ]
+        );
+        
+        // echo "&ltpre>";
+        // var_dump($casa_de_michis);
+        
+        dd($casa_de_michis);
+    </pre>
+    <p><strong>NOTA</strong> Con | control | y click, puedes minimizar toda la variable debugada.</p>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 3 de 22 - ¿Qué son las cookies?</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // setcookie(
+      //     name: "header_color",
+      //     value: "#12373d"
+      // );
+      
+      setcookie("header_color", "#12373d");
+      
+      $color = $_COOKIE["header_color"] ?? "#121f3d";
+      ?>
+      
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &ltlink rel="stylesheet" href="style.css">
+          &lttitle>Platzi&lt/title>
+      &lt/head>
+      &ltbody>
+          &ltheader style="background: &lt?= $color ?>">
+              &ltimg src="logo.webp" alt="Logo">
+          &lt/header>
+      &lt/body>
+      &lt/html>
+    </pre>
+
+    <pre class="prettyprint">
+            
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    header {
+        display: flex;
+        padding: 10px;
+    }
+    
+    header img {
+        width: 100px;
+    }
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 4 de 22 - Trabajando con cookies</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // ONLY PHP 8: named arguments
+      
+      if (!isset($_COOKIE["example_cookie"])) {
+      
+          // setcookie(
+          //     name: "example_cookie",
+          //     value: "un michi salvaje",
+          //     expires_or_options: 0,
+          //     path: "/",
+          //     domain: "localhost",
+          //     secure: false,
+          //     httponly: true
+          // );
+      
+      
+      
+          echo "¡Cookie creada!";
+      }
+      echo "&ltpre>";
+      var_dump($_COOKIE);
+      echo "&lt/pre>";
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // setcookie(
+          // name: "subdomain_cookie",
+          // value: "Esta cookie solo está disponible en /configuracion",
+          // expires_or_options: time() + 60 * 60 * 24,
+          // path: "/php-intermedio-2/cookies/platzi/configuracion/",
+          // domain: "localhost",
+          // secure: false,
+          // httponly: true
+      // );
+      
+      echo "&ltpre>";
+      var_dump($_COOKIE);
+      echo "&lt/pre>";
+      
+      ?>
+    </pre>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      echo "&ltpre>";
+      var_dump($_COOKIE);
+      echo "&lt/pre>";
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 5 de 22 - ¿Qué son las sesiones?</h2>
+    
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 6 de 22 - Trabajando con sesiones</h2>
+    <pre class="prettyprint">
+            
+      &lt?php session_start(); ?>
+
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Perfil&lt/title>
+      &lt/head>
+      &ltbody>
+          &lt?php if( isset( $_SESSION["id"])): ?>
+              &lth1>Hola &lt?= $_SESSION["username"] ?>&lt/h1>
+              &ltp>Tu email es: &lt?= $_SESSION["email"] ?>&lt/p>
+              &lta href="./logout.php">Salir&lt/a>
+          &lt?php else: ?>
+              &lth1>No has iniciado sesión&lt/h1>
+              &lta href="./login.php?user=1">Ir al login&lt/a>
+          &lt?php endif; ?>
+      &lt/body>
+      &lt/html>
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      session_start();
+      
+      $users = [
+          array(
+              "username" => "Retaxito",
+              "email" => "retaxito@mail.com"
+          ),
+          array(
+              "username" => "Michi",
+              "email" => "michi@mail.com"
+          ),
+      ];
+      
+      $id = $_GET["user"] ?? "";
+      
+      echo "El usuario elegido es: " . $users[$id]["username"];
+      
+      $_SESSION["id"] = $id;
+      $_SESSION["username"] = $users[$id]["username"];
+      $_SESSION["email"] = $users[$id]["email"];
+      
+      ?>
+      
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Login&lt/title>
+      &lt/head>
+      &ltbody>
+          &lta href="./index.php">Ir al index&lt/a>
+      &lt/body>
+      &lt/html>
+    </pre>
+    <pre class="prettyprint">
+            
+      &lt?php
+      session_start();
+      session_destroy();
+      ?>
+      
+      
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Perfil&lt/title>
+      &lt/head>
+      &ltbody>
+      
+              &lth1>Saliste&lt/h1>
+              &lta href="./login.php?user=0">Volver a Entrar&lt/a>
+      &lt/body>
+      &lt/html>
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 7 de 22 - ¿Qué son las excepciones?</h2>
+    
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 8 de 22 - Implementando try/catch</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+      function inverse($x) {
+          if (!$x) {
+              throw new Exception('Division by zero.');
+          }
+          return 1/$x;
+      }
+      
+      try {
+          echo inverse(5) . "\n";
+          echo inverse(0) . "\n";
+      } catch (Exception $e) {
+          echo 'Caught exception: ',  $e->getMessage(), "\n";
+      }
+      
+      // Continue execution
+      echo "Hello World\n";
+      ?>
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      try {
+          $pet = readline("¿Qué quieres adoptar? ");
+      
+          if ($pet != "michi" && $pet != "conejo")
+              throw new Exception("Lo sentimos no tenemos $pet en este centro de adopción");
+      
+          echo "Felicidades por tu nuevo $pet";
+      } catch (\Throwable $th) {
+          //throw $th;
+          echo $th->getMessage();
+      }
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 9 de 22 - Revisando los métodos de las excepciones</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+      function inverse($x)
+      {
+          if (!$x) {
+              throw new Exception('Division by zero.');
+          }
+          return 1 / $x;
+      }
+      
+      try {
+          echo inverse(5) . "\n";
+          echo "&ltbr>";
+          echo inverse(0) . "\n";
+      } catch (Exception $e) {
+          echo "&ltbr>";
+          echo 'Caught exception: ',  $e->getMessage(), "\n";
+          echo "&ltbr>";
+          echo "&ltbr>";
+          echo $e->getCode();
+          echo "&ltbr>";
+          echo "&ltbr>";
+          echo $e->getFile();
+          echo "&ltbr>";
+          echo "&ltbr>";
+          echo $e->getLine();
+          echo "&ltbr>";
+          echo "&ltbr>";
+          echo "&ltpre>";
+          var_dump($e->getTrace());
+          echo "&lt/pre>";
+          echo "&ltbr>";
+          echo "&ltbr>";
+      }
+      
+      // Continue execution
+      echo "Hello World\n";
+      
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 10 de 22 - Crea tus propias excepciones</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      class MichiException extends Exception {
+          public function getMeow() {
+              return "Meow 🙀";
+          }
+      }
+      
+      class ConejiException extends Exception {
+          public function getRabbit() {
+              return "🐰";
+          }
+      }
+      
+      
+      try {
+          $exception = readline("Excepcion a lanzar: ");
+      
+          if ($exception == "michi")
+              throw new MichiException("Michi incorrecto");
+          else
+              throw new ConejiException("Conejo incorrecto");
+      
+      } catch (MichiException $e) {
+          echo $e->getMessage();
+          echo "&ltbr>";
+          echo "&ltbr>";
+          echo $e->getMeow();
+      } catch (ConejiException $e) {
+          echo $e->getMessage();
+          echo "&ltbr>";
+          echo "&ltbr>";
+          echo $e->getRabbit();
+      } finally {
+          echo "Te perdono";
+      }
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 11 de 22 - ¿Cómo trabajar con fechas en PHP?</h2>
+    <p>
+      <a href="https://www.php.net/manual/en/function.date.php">https://www.php.net/manual/en/function.date.php</a>
+      <br>
+      <a href="https://www.php.net/manual/en/class.datetime.php">https://www.php.net/manual/en/class.datetime.php</a>
+      <br>
+      <a href="https://www.php.net/manual/en/class.dateinterval.php">https://www.php.net/manual/en/class.dateinterval.php</a>
+      <br>
+      <a href="https://www.php.net/manual/en/function.time.php">https://www.php.net/manual/en/function.time.php</a>
+      <br>
+      <a href="https://www.php.net/manual/es/ref.datetime.php">https://www.php.net/manual/es/ref.datetime.php</a>
+    </p>
+
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 12 de 22 - Fechas con funciones vs. fechas con POO</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // Por procedimiento / estructurada / funciones
+      
+      $interval = date_interval_create_from_date_string("5 days");
+      $date = date_create();
+      echo date_format(date_add($date, $interval), "Y-m-d");
+      
+      echo "&ltbr>";
+      echo "&ltbr>";
+      echo "&ltbr>";
+      
+      // POO
+      $interval = DateInterval::createFromDateString("5 days");
+      $date = new DateTime();
+      $date->add($interval);
+      echo $date->format("Y-m-d");
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 13 de 22 - Funciones para fechas</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // Establecer la zona horaria
+      date_default_timezone_set("America/Mexico_City");
+      
+      // Obtener la fecha actual
+      $now = date("Y-m-d H:i:s");
+      echo $now;
+      echo "&ltbr>";
+      
+      $now = date("Y/m/d H:i:s");
+      echo $now;
+      echo "&ltbr>";
+      
+      $now = date_create();
+      // echo $now;
+      
+      
+      // strtotime
+      $now = date("Y-m-d H:i:s");
+      echo strtotime($now);
+      echo "&ltbr>";
+      echo strtotime("17 April 2020");
+      echo "&ltbr>";
+      echo strtotime("+1 week");
+      echo "&ltbr>";
+      echo strtotime("next Monday");
+      echo "&ltbr>";
+      echo strtotime("last Wednesday");
+      echo "&ltbr>";
+      
+      $unix_time_last_wednesday = strtotime("last Wednesday");
+      echo date("Y-m-d H:i:s", $unix_time_last_wednesday);
+      echo "&ltbr>";
+      
+      $unix_time_next_monday = strtotime("last Monday");
+      echo date("Y-m-d H:i:s", $unix_time_next_monday);
+      echo "&ltbr>";
+      
+      $unix_time_plus_one_week = strtotime("+1 week");
+      echo date("Y-m-d H:i:s", $unix_time_plus_one_week);
+      echo "&ltbr>";
+      
+      $unix_time_17_april = strtotime("17 April 2020");
+      echo date("Y-m-d H:i:s", $unix_time_17_april);
+      
+      // Fechas inmutables
+      $date_inmutable = new DateTimeImmutable();
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 14 de 22 - más funciones para fechas</h2>
+
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // Diferencia de Tiempo
+      
+      $today = new DateTime();
+      $birth = new DateTime("1989-01-31");
+      
+      $interval = $birth->diff($today);
+      echo $interval->format("Han pasado %y años, %m meses con %d dias");
+      echo "&ltbr>";
+      
+      // Creamos desde un formato cualquiera
+      $date = DateTime::createFromFormat("l j F Y", "Sunday 17 April 2022");
+      
+      echo $date->format("Y-m-d H:i:s");
+      echo "&ltbr>";
+      // Modificar una fecha
+      $date = new DateTime();
+      $date->modify("+1 day +2 months");
+      
+      echo $date->format("Y-m-d H:i:s");
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 15 de 22 - Expande tu arsenal de funciones para fechas</h2>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      //Transforma a una fecha legible un timestamp - RetaxMaster
+      function get_date_from_timestamp(string $timestamp) : string {
+          $timestamp = substr($timestamp, 0, 10);
+          $numeroDia = date('d', strtotime($timestamp));
+          $dia = date('l', strtotime($timestamp));
+          $mes = date('F', strtotime($timestamp));
+          $anio = date('Y', strtotime($timestamp));
+          $dias_ES = array("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+          $dias_EN = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+          $nombredia = str_replace($dias_EN, $dias_ES, $dia);
+          $meses_ES = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+          $meses_EN = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+          $nombreMes = str_replace($meses_EN, $meses_ES, $mes);
+          return $nombredia." ".$numeroDia." de ".$nombreMes." del ".$anio;
+      }
+      
+      //Transforma un timestamp en una fecha corta: dd/mm/yyyy - RetaxMaster
+      function get_short_date_from_timestamp(string $timestamp) : string {
+          return date("d/m/Y", strtotime($timestamp));
+      }
+      
+      //Añade puntos a am y pm retornando a.m o p.m - RetaxMaster
+      function add_dots_to_hour(string $hour) : string {
+          return str_replace("pm", "p.m", str_replace("am", "a.m", $hour));
+      }
+      
+      //Transforma a una hora legible un timestamp - RetaxMaster
+      function get_time_from_timestamp(string $time) : string {
+          return add_dots_to_hour(date("g:ia", strtotime($time)));
+      }
+      
+      //Obtiene el día de la semana según su numero - RetaxMaster
+      function get_day_of_the_week(int $day) : string {
+          switch ($day) {
+              case 1: $name = "Lunes"; break;
+              case 2: $name = "Martes"; break;
+              case 3: $name = "Miércoles"; break;
+              case 4: $name = "Jueves"; break;
+              case 5: $name = "Viernes"; break;
+              case 6: $name = "Sábado"; break;
+              case 7: $name = "Domingo"; break;
+              default: $name = "Undefined";
+          }
+          return $name;
+      }
+      
+      //Traduce el tiempo a español o ingles según se especifique, por ejemplo: "1 día" a inglés da: "1 day" y viceversa - RetaxMaster
+      function translate_time(string $time, bool $toSpanish) : string {
+          //Separo el numero del texto
+          $time = explode(" ", $time);
+          $number = $time[0];
+          $string = $time[1];
+          //Creamos los arays con sus traducciones
+          $es = array("segundo", "minuto", "hora", "día", "semana", "mes", "año", "segundos", "minutos", "horas", "días", "semanas", "meses", "años");
+          $en = array("second", "minute", "hour", "day", "week", "month", "year", "seconds", "minutes", "hours", "days", "weeks", "months", "years");
+          //Lo traducimos y retornamos la palabra traducida segun el idioma especificado
+          $string = ($toSpanish) ? $es[array_search($string, $en)] : $en[array_search($string, $es)];
+          return $number." ".$string;
+      }
+      
+      //Añade la cantidad de tiempo indicada a un timestamp, si indicas "now" tomará la fecha actual, como segundo parámetro recibe la cantidad de tiempo a añadir en español, por ejemplo, "1 año", "7 dias", "4 semanas", etc... - RetaxMaster
+      function add_time(string $timestamp, string $timeToAdd) : string {
+          $timestamp = ($timestamp == "now") ? date("Y-m-d  H:i:s") : $timestamp;
+      
+          $timeToAdd = explode(" + ", $timeToAdd);
+          foreach ($timeToAdd as $key => $value) $timeToAdd[$key] = translate_time($value, false);
+          $time = implode(" + ", $timeToAdd);
+      
+          $date = new DateTime($timestamp);
+          $date->add(DateInterval::createFromDateString($time));
+          return $date->format('Y-m-d H:i:s');
+      }
+      
+      //Resta dos fechas en formato tiemstamp y retorna un DateInterval - RetaxMaster
+      function time_diff(string $timestamp1, string $timestamp2) : DateInterval {
+          $timestamp1 = ($timestamp1 == "now") ? date("Y-m-d  H:i:s") : $timestamp1;
+          $timestamp2 = ($timestamp2 == "now") ? date("Y-m-d  H:i:s") : $timestamp2;
+          $date1 = new DateTime($timestamp1);
+          $date2 = new DateTime($timestamp2);
+          $interval = $date1->diff($date2);
+          return $interval;//->format("%a días");
+      }
+      
+      //Retorna la diferencia entre 2 horas
+      function hour_diff(string $h1, string $h2, bool $enable_distant_hours = true) : int {
+          $hour1 = new DateTime($h1);
+          $hour2 = new DateTime($h2);
+          $diff = $hour1->diff($hour2);
+          $diff = (int) $diff->format("%R%H");
+          //Si sale un número negativo es porque se está obteniendo la diferencia entre horas distantes, ej: entre las 4 de la mañana y las 1 de la mañana
+          $diff = ($diff &lt 0 && $enable_distant_hours) ? $diff + 24 : $diff;
+          return $diff;
+      }
+      
+      //Retorna si una hora dada está entre dos horas, recibe la hora inferior, la superior y la hora que se verificará - RetaxMaster
+      function hour_is_between(string $from, string $to, string $input) : bool {
+          $dateFrom = DateTime::createFromFormat('!H:i:s', $from);
+          $dateTo = DateTime::createFromFormat('!H:i:s', $to);
+          $dateInput = DateTime::createFromFormat('!H:i:s', $input);
+          if ($dateFrom > $dateTo) $dateTo->modify('+1 day');
+          return ($dateFrom &lt= $dateInput && $dateInput &lt= $dateTo) || ($dateFrom &lt= $dateInput->modify('+1 day') && $dateInput &lt= $dateTo);
+      }
+      
+      //Retorna si una fecha está entre dos fechas, recibe la hora inferior, la superior y la fecha que se verificará - RetaxMaster
+      function date_is_between(string $from, string $to, string $input) : bool {
+          return strtotime($from) &lt= strtotime($input) && strtotime($input) &lt= strtotime($to);
+      }
+      
+      //Obtiene una fecha entera a partir de un timestamp - RetaxMaster
+      function get_full_date(string $timestamp) : string {
+          return get_date_from_timestamp($timestamp)." a las ".get_time_from_timestamp($timestamp);
+      }
+      
+      //Convierte Timestamp de JavaScript a Timestamp de PHP -- RetaxMaster
+      
+      function convert_javascript_timestamp_to_php_timestamp(string $timestamp) {
+          $timestamp = substr($timestamp, 0, -1);
+          return explode(".", implode(" ", explode("T", $timestamp)))[0];
+      }
+      
+      //Obtiene una fecha entera a partir de un timestamp de JavaScript - RetaxMaster
+      function get_full_date_from_javascript_timestamp(string $timestamp) : string{
+          $timestamp = convert_javascript_timestamp_to_php_timestamp($timestamp);
+          return get_full_date($timestamp);
+      }
+    </pre>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      require("date.php");
+      
+      echo get_date_from_timestamp("2022-04-25");
+      echo "&ltbr>";
+      
+      echo get_short_date_from_timestamp("2022-04-25");
+      echo "&ltbr>";
+      
+      echo get_time_from_timestamp("18:32:45");
+      echo "&ltbr>";
+      
+      echo get_day_of_the_week(4);
+      echo "&ltbr>";
+      
+      echo translate_time("1 día", false);
+      echo "&ltbr>";
+      
+      echo add_time("2022-04-23 12:45:34", "1 día + 2 horas + 2 semanas");
+      echo "&ltbr>";
+      
+      echo get_full_date("2022-04-23 12:45:34");
+      echo "&ltbr>";
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 16 de 22 - Modularización del código</h2>
+    <ul>
+      <li>require</li>
+      <li>include</li>
+      <li>include once</li>
+    </ul>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      const NOMBRE = "Retaxito";
+      const EDAD = 14;
+      const PROFESION = "Acariciador de Michis Profesional";
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // include("constantes.php");
+      
+      // echo PROFESION;
+      // echo "&ltbr>";
+      
+      // Si nos equivocamos en el nombre... nos aparece un warning
+      // include("constantess.php");
+      
+      // // echo PROFESION;
+      
+      // echo "&ltbr>";
+      // echo "Sigo funcionando";
+      // echo "&ltbr>";
+      
+      
+      // Con require... FATAL ERROR
+      // require("constantess.php");
+      
+      // echo "NO Sigo funcionando";
+      // echo "&ltbr>";
+      
+      // Si incluimos dos veces el mismo archivo... se vuelve a escribir
+      // Va mal si tenemos constantes, porque se van a redeclarar
+      // include("constantes.php");
+      // include("constantes.php");
+      
+      
+      // include_once nos soluciona esto
+      include_once("constantes.php");
+      include_once("constantes.php");
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      class Michi
+      {
+          protected $name;
+          protected $color;
+          protected $age;
+      
+          function __construct($name, $color, $age)
+          {
+              $this->name = $name;
+              $this->color = $color;
+              $this->age = $age;
+          }
+      
+          public function getName()
+          {
+              return $this->name;
+          }
+      
+          public function setName($name)
+          {
+              $this->name = $name;
+          }
+      
+          public function getColor()
+          {
+              return $this->color;
+          }
+      
+          public function setColor($color)
+          {
+              $this->color = $color;
+          }
+      
+          public function getAge()
+          {
+              return $this->age;
+          }
+      
+          public function setAge($age)
+          {
+              $this->age = $age;
+          }
+      
+          public function sayMeow()
+          {
+              return "Meow";
+          }
+      }
+      
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      require("Classes/Michi.php");
+      
+      $mrmichi = new Michi("Mr.Michi", "Blanquito", 16);
+      $michisancio = new Michi("Michisancio", "Naranjita", 15);
+      $michales = new Michi("Micahles", "Negrito", 8);
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      // require("Classes/Michi.php");
+      require("Logic/Create.php");
+      
+      ?>
+      
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Document&lt/title>
+      &lt/head>
+      &ltbody>
+          &ltul>
+              &ltli>&lt?= $mrmichi->getName() ?> dice &lt?= $mrmichi->sayMeow() ?>&lt/li>
+              &ltli>&lt?= $michisancio->getName() ?> dice &lt?= $michisancio->sayMeow() ?>&lt/li>
+              &ltli>&lt?= $michales->getName() ?> dice &lt?= $michales->sayMeow() ?>&lt/li>
+          &lt/ul>
+      &lt/body>
+      &lt/html>
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 17 de 22 - Namespaces</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace MichisAdoptados;
+      
+      class Michi
+      {
+          protected $name;
+          protected $date_adopted;
+          protected $adopted_by;
+      
+          function __construct($name, $date_adopted, $adopted_by)
+          {
+              $this->name = $name;
+              $this->date_adopted = $date_adopted;
+              $this->adopted_by = $adopted_by;
+          }
+      
+          public function getName()
+          {
+              return $this->name;
+          }
+      
+          public function setName($name)
+          {
+              $this->name = $name;
+          }
+      
+          public function getdate_adopted()
+          {
+              return $this->date_adopted;
+          }
+      
+          public function setdate_adopted($date_adopted)
+          {
+              $this->date_adopted = $date_adopted;
+          }
+      
+          public function getadopted_by()
+          {
+              return $this->adopted_by;
+          }
+      
+          public function setadopted_by($adopted_by)
+          {
+              $this->adopted_by = $adopted_by;
+          }
+      
+          public function sayMeow()
+          {
+              return "Meow";
+          }
+      }
+      
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace MichisDisponibles;
+      
+      class Michi
+      {
+          protected $name;
+          protected $color;
+          protected $age;
+      
+          function __construct($name, $color, $age)
+          {
+              $this->name = $name;
+              $this->color = $color;
+              $this->age = $age;
+          }
+      
+          public function getName()
+          {
+              return $this->name;
+          }
+      
+          public function setName($name)
+          {
+              $this->name = $name;
+          }
+      
+          public function getColor()
+          {
+              return $this->color;
+          }
+      
+          public function setColor($color)
+          {
+              $this->color = $color;
+          }
+      
+          public function getAge()
+          {
+              return $this->age;
+          }
+      
+          public function setAge($age)
+          {
+              $this->age = $age;
+          }
+      
+          public function sayMeow()
+          {
+              return "Meow";
+          }
+      }
+      
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      require("Classes/MichisAdoptados/Michi.php");
+      require("Classes/MichisDisponibles/Michi.php");
+      
+      // Primera forma... muy antiestetica
+      // $mrmichi = new MichisDisponibles\Michi("Mr.Michi", "Blanquito", 16);
+      // $michisancio = new MichisDisponibles\Michi("Michisancio", "Naranjita", 15);
+      // $michales = new MichisDisponibles\Michi("Micahles", "Negrito", 8);
+      
+      use MichisDisponibles\Michi;
+      use MichisAdoptados\Michi as MichiAdoptado;
+      
+      $mrmichi = new Michi("Mr.Michi", "Blanquito", 16);
+      $michisancio = new Michi("Michisancio", "Naranjita", 15);
+      $michales = new Michi("Micahles", "Negrito", 8);
+      
+      $mrmichi_adopted = new MichiAdoptado("Mr.Michi", new DateTime(), "Adopter 1");
+      $michisancio_adopted = new MichiAdoptado("Michisancio", new DateTime(), "Adopter 1");
+      $michales_adopted = new MichiAdoptado("Micahles", new DateTime(), "Adopter 1");
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 18 de 22 - PSR-4 y Composer</h2>
+    <pre class="prettyprint">
+            
+      > composer init
+    </pre>
+    <pre class="prettyprint">
+            
+      {
+        "name": "alexa/018-composer-psr",
+        "type": "project",
+        "license": "MIT",
+        "authors": [
+            {
+                "name": "Alexander Diaz",
+                "email": "aliensanderdiaz@gmail.com"
+            }
+        ],
+        "autoload": {
+            "files": [
+                "app/Logic/CreateMichis.php"
+            ],
+            "psr-4": {
+                "App\\": "app/"
+            }
+        },
+        "require": {}
+    }
+    
+    </pre>
+
+    <pre class="prettyprint">
+            
+      > composer du
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace App\Classes;
+      
+      class MichisAdoptados
+      {
+          protected $name;
+          protected $date_adopted;
+          protected $adopted_by;
+      
+          function __construct($name, $date_adopted, $adopted_by)
+          {
+              $this->name = $name;
+              $this->date_adopted = $date_adopted;
+              $this->adopted_by = $adopted_by;
+          }
+      
+          public function getName()
+          {
+              return $this->name;
+          }
+      
+          public function setName($name)
+          {
+              $this->name = $name;
+          }
+      
+          public function getdate_adopted()
+          {
+              return $this->date_adopted;
+          }
+      
+          public function setdate_adopted($date_adopted)
+          {
+              $this->date_adopted = $date_adopted;
+          }
+      
+          public function getadopted_by()
+          {
+              return $this->adopted_by;
+          }
+      
+          public function setadopted_by($adopted_by)
+          {
+              $this->adopted_by = $adopted_by;
+          }
+      
+          public function sayMeow()
+          {
+              return "Meow";
+          }
+      }
+      
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace App\Classes;
+      
+      class Michi
+      {
+          protected $name;
+          protected $color;
+          protected $age;
+      
+          function __construct($name, $color, $age)
+          {
+              $this->name = $name;
+              $this->color = $color;
+              $this->age = $age;
+          }
+      
+          public function getName()
+          {
+              return $this->name;
+          }
+      
+          public function setName($name)
+          {
+              $this->name = $name;
+          }
+      
+          public function getColor()
+          {
+              return $this->color;
+          }
+      
+          public function setColor($color)
+          {
+              $this->color = $color;
+          }
+      
+          public function getAge()
+          {
+              return $this->age;
+          }
+      
+          public function setAge($age)
+          {
+              $this->age = $age;
+          }
+      
+          public function sayMeow()
+          {
+              return "Meow";
+          }
+      }
+      
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      use App\Classes\Michi;
+      use App\Classes\MichisAdoptados;
+      
+      function createMichis() {
+          $mr_michi = new Michi("Mr. Michi", "Blanquito", 14);
+          $mr_michi_adopted = new MichisAdoptados("Mr. Michi", new DateTime(), "Juanito");
+      
+          echo $mr_michi->sayMeow() . " Me adoptó {$mr_michi_adopted->getadopted_by()}";
+      }
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      require("vendor/autoload.php");
+      
+      createMichis();
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 19 de 22 - Front Controller</h2>
+    <pre class="prettyprint">
+            
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Contact&lt/title>
+      &lt/head>
+      &ltbody>
+          &lth1>Contact&lt/h1>
+      &lt/body>
+      &lt/html>
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Home&lt/title>
+      &lt/head>
+      &ltbody>
+          &lth1>Home&lt/h1>
+      &lt/body>
+      &lt/html>
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt!DOCTYPE html>
+      &lthtml lang="en">
+      &lthead>
+          &ltmeta charset="UTF-8">
+          &ltmeta http-equiv="X-UA-Compatible" content="IE=edge">
+          &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+          &lttitle>Services&lt/title>
+      &lt/head>
+      &ltbody>
+          &lth1>Services&lt/h1>
+      &lt/body>
+      &lt/html>
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      $page = $_GET["page"] ?? null;
+      
+      
+      switch ($page) {
+          case 'contact':
+              require("pages/contact.php");
+              break;
+              
+          case 'services':
+              require("pages/services.php");
+              break;
+      
+          default:
+              require("pages/home.php");
+      }
+      
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 20 de 22 - El archivo .htaccess</h2>
+    <pre class="prettyprint">
+      RewriteEngine On
+
+      RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteCond %{REQUEST_FILENAME} !-d
+      
+      RewriteRule ^(.*)$ index.php?page=$1 [L]
+    </pre>
+  </article>
+</section>
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 21 de 22 - TRAITS</h2>
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace App\Traits;
+      
+      trait Pet {
+          
+          public function play() {
+              return "I'm playing!!";
+          }
+          
+          public function sleep() {
+              return "I'm sleeping!!";
+          }
+      }
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace App\Classes;
+      
+      use App\Traits\Pet;
+      
+      class Michi {
+      
+          use Pet;
+          
+          public function sayMeow()
+          {
+              return "Meow! 🐱";
+          }
+      
+          public function scratch() {
+              return "😾";
+          }
+      }
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      namespace App\Classes;
+      
+      use App\Traits\Pet;
+      
+      class Perritu {
+      
+          use Pet;
+      
+          public function bark()
+          {
+              return "Woog! 🐶";
+          }
+      
+          public function drool() {
+              return "🐕";
+          }
+      }
+    </pre>
+
+    <pre class="prettyprint">
+            
+      &lt?php
+
+      require("vendor/autoload.php");
+      
+      use App\Classes\Perritu;
+      use App\Classes\Michi;
+      
+      $firulais = new Perritu();
+      $michi = new Michi();
+      
+      echo $firulais->sleep();
+      echo $firulais->play();
+      echo $firulais->bark();
+      echo $firulais->drool();
+      
+      echo $michi->sleep();
+      echo $michi->play();
+      echo $michi->sayMeow();
+      echo $michi->scratch();
+    </pre>
+  </article>
+</section>
+
+
+<hr>
+
+<section class="row">
+  <article class="col">
+    <h2>Sección 22 de 22 - ¿Quieres aprender sobre base de datos?</h2>
+    
+  </article>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+
+</html>
